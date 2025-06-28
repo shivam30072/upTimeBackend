@@ -55,6 +55,9 @@ const verifyOtp = async (req, res) => {
     user.isVerified = true;
     user.otp = undefined;
     user.otpExpiry = undefined;
+    
+    user.token = user.generateJwt();
+    
     await user.save();
 
     res.status(200).json({

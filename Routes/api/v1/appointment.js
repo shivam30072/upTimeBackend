@@ -11,6 +11,7 @@ const {
   getAppointmentsByShop,
   updateAppointmentStatus,
 } = require("../../../Controllers/Appointment/appointmentController");
+const { shopkeeperOnly } = require("../../../Middleware/shopKeeperOnly");
 
 const router = express.Router();
 
@@ -22,5 +23,10 @@ router.post(
   createAppointment
 );
 router.get("/:shopId", authMiddleware, getAppointmentsByShop);
-router.get("/:id/status", authMiddleware, updateAppointmentStatus);
+router.patch(
+  "/:id/status",
+  authMiddleware,
+  shopkeeperOnly,
+  updateAppointmentStatus
+);
 module.exports = router;

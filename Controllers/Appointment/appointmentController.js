@@ -80,12 +80,6 @@ const updateAppointmentStatus = async (req, res) => {
       return res.status(404).json({ error: "Appointment not found" });
     }
 
-    if (STATUS.includes(appointment.status)) {
-      return res.status(400).json({
-        error: `Appointment is already ${appointment.status}, status cannot be changed`,
-      });
-    }
-
     const appointmentDate = new Date(appointment.date);
 
     const [startTime] = appointment.timeSlot.split("-");
@@ -97,6 +91,12 @@ const updateAppointmentStatus = async (req, res) => {
     if (now > appointmentDate) {
       return res.status(400).json({
         error: "Cannot update status of a past appointment",
+      });
+    }
+
+    if (STATUS.includes(appointment.status)) {
+      return res.status(400).json({
+        error: `Appointment is already ${appointment.status}, status cannot be changed`,
       });
     }
 
